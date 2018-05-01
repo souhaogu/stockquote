@@ -1,7 +1,7 @@
 package com.soustock.stockquote.crawl.connect;
 
-import com.soustock.stockquote.crawl.connect.HttpRequester;
 
+import com.soustock.stockquote.utils.HttpRequester;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

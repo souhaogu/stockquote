@@ -4,7 +4,7 @@ package com.soustock.stockquote.service;
 import com.soustock.stockquote.dao.DayQuoteDao;
 import com.soustock.stockquote.po.DayQuoteCdtVo;
 import com.soustock.stockquote.po.StockQuotePo;
-import com.soustock.stockquote.vo.StockQuoteVo;
+import com.soustock.stockquote.vo.DayQuoteVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +21,14 @@ public class DayQuoteServiceImpl implements DayQuoteService {
     private DayQuoteDao dayQuoteDao;
 
     @Override
-    public List<StockQuoteVo> queryQuoteData(String stockCode, int recentlyCount) throws Exception {
+    public List<DayQuoteVo> queryQuoteData(String stockCode, int recentlyCount) throws Exception {
         DayQuoteCdtVo dayQuoteCdtVo = new DayQuoteCdtVo();
         dayQuoteCdtVo.setStockCode(stockCode);
         dayQuoteCdtVo.setRecentlyCount(recentlyCount);
         List<StockQuotePo> stockBasicPoList = dayQuoteDao.getStockQuotesByStockCodeCount(dayQuoteCdtVo);
-        List<StockQuoteVo> stockQuoteVos = new ArrayList<>(stockBasicPoList.size());
+        List<DayQuoteVo> dayQuoteVos = new ArrayList<>(stockBasicPoList.size());
         for (StockQuotePo po: stockBasicPoList){
-            StockQuoteVo vo = new StockQuoteVo();
+            DayQuoteVo vo = new DayQuoteVo();
             vo.setTradeDate(po.getTradeDate());
             vo.setHighPrice(po.getHighPrice());
             vo.setOpenPrice(po.getOpenPrice());
@@ -36,8 +36,8 @@ public class DayQuoteServiceImpl implements DayQuoteService {
             vo.setClosePrice(po.getClosePrice());
             vo.setTradeQty(po.getTradeQty());
             vo.setTradeMoney(po.getTradeMoney());
-            stockQuoteVos.add(vo);
+            dayQuoteVos.add(vo);
         }
-        return stockQuoteVos;
+        return dayQuoteVos;
     }
 }

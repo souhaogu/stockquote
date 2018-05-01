@@ -1,4 +1,4 @@
-package com.soustock.stockquote.crawl.connect;
+package com.soustock.stockquote.utils;
 
 
 import java.io.ByteArrayOutputStream;
@@ -202,5 +202,12 @@ public class HttpRequester {
      */
     public void setDefaultContentEncoding(String defaultContentEncoding) {
         this.defaultContentEncoding = defaultContentEncoding;
+    }
+
+    public static void main(String[] args) throws IOException {
+        String url = String.format("http://vip.stock.finance.sina.com.cn/quotes_service/view/vML_DataList.php?asc=j&symbol=%s&num=%d", "sh600000", 34);
+        HttpRequester httpRequester = new HttpRequester();
+        String responseStr = httpRequester.sendGet(url);
+        System.out.println(responseStr);
     }
 }

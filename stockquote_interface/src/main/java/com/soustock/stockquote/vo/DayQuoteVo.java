@@ -5,9 +5,9 @@ import java.io.Serializable;
 
 /**
  * Created by xuyufei on 2016/3/5.
- * 股票行情
+ * 日行情，也可以作为周、月、季行情
  */
-public class StockQuoteVo implements Serializable {
+public class DayQuoteVo implements Serializable {
 
     /**
      * 交易日期（日、周、月行情为日期字符串８位，5、10、15、30、60分钟为时间节点字符串14位
