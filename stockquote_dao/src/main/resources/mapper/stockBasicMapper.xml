@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "classpath:/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.soustock.stockquote.mapper.StockBasicMapper">
+
+    <resultMap id="stockBasicResultMap" type="com.soustock.stockquote.po.StockBasicPo">
+        <result property="stockCode" column="stock_code" javaType="string" jdbcType="VARCHAR" />
+        <result property="stockName" column="stock_name" javaType="string" jdbcType="VARCHAR" />
+        <result property="pyName" column="py_name" javaType="string" jdbcType="VARCHAR" />
+        <result property="listDate" column="list_date" javaType="string" jdbcType="VARCHAR" />
+        <result property="market" column="market" javaType="string" jdbcType="VARCHAR" />
+        <result property="updateTime" column="update_time" javaType="long" jdbcType="BIGINT" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        stock_code, stock_name, py_name, list_date, market, update_time
+    </sql>
+
+    <select id="getStockBasicByStockCode" parameterType="java.lang.String"
+            resultMap="stockBasicResultMap">
+        select <include refid="Base_Column_List" />
+        from stock_basic
+        where stock_code=#{stockCode}
+    </select>
+
+    <insert id="insertStockBasic" parameterType="com.soustock.stockquote.po.StockBasicPo">
+        INSERT INTO stock_basic(<include refid="Base_Column_List" />)
+        VALUES ( #{stockCode,jdbcType=VARCHAR},
+                  #{stockName,jdbcType=VARCHAR},
+                  #{pyName,jdbcType=VARCHAR},
+                  #{listDate,jdbcType=VARCHAR},
+                  #{market,jdbcType=VARCHAR},
+                  #{updateTime,jdbcType=BIGINT}
+                )
+    </insert>
+
+    <select id="getStockCountOfMarket" parameterType="java.lang.String" resultType="java.lang.Long">
+        select count(*) from stock_basic where market=#{market}
+    </select>
+
+    <insert id="updateStockBasic" parameterType="com.soustock.stockquote.po.StockBasicPo">
+        update stock_basic set stock_name=#{stockName,jdbcType=VARCHAR},
+            py_name=#{pyName,jdbcType=VARCHAR},
+            list_date=#{listDate,jdbcType=VARCHAR},
+            market=#{market,jdbcType=VARCHAR},
+            update_time=#{updateTime,jdbcType=BIGINT}
+        where stock_code=#{stockCode}
+    </insert>
+
+    <select id="getAllStockBasics"
+            resultMap="stockBasicResultMap">
+        select <include refid="Base_Column_List" />
+        from stock_basic
+    </select>
+
+    <select id="getAllStockBasicsOfMarket" parameterType="java.lang.String"
+            resultMap="stockBasicResultMap">
+        select <include refid="Base_Column_List" />
+        from stock_basic
+        where market=#{market}
+        order by stock_code asc
+    </select>
+
+</mapper>

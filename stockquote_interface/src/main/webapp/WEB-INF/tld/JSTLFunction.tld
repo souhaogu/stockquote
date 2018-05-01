@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+    <description>dic jstl functions library</description>
+    <display-name>dic jstl functions</display-name>
+    <tlib-version>1.0</tlib-version>
+    <short-name>dic</short-name>
+    <uri>/WEB-INF/tld/JSTLFunction.tld</uri>
+
+    <function>
+        <name>get</name>
+        <function-class>com.soustock.stockquote.utils.JSTLFunction</function-class>
+        <function-signature>
+            java.lang.String get(java.lang.String, java.lang.String)
+        </function-signature>
+    </function>
+
+    <function>
+        <name>toMultiselectValue</name>
+        <function-class>com.soustock.stockquote.utils.JSTLFunction</function-class>
+        <function-signature>
+            java.lang.String toMultiselectValue(java.util.List)
+        </function-signature>
+    </function>
+
+    <function>
+        <name>dateStr</name>
+        <function-class>com.soustock.stockquote.utils.JSTLFunction</function-class>
+        <function-signature>
+            java.lang.String toDateStr(long)
+        </function-signature>
+    </function>
+
+    <function>
+        <name>secondsFormate</name>
+        <function-class>com.soustock.stockquote.utils.JSTLFunction</function-class>
+        <function-signature>
+            java.lang.String secondsFormate(long)
+        </function-signature>
+    </function>
+</taglib>

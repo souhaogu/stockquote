@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "classpath:/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.soustock.stockquote.mapper.DayQuoteMapper">
+
+    <resultMap id="stockQuoteResultMap" type="com.soustock.stockquote.po.StockQuotePo">
+        <result property="stockCode" column="stock_code" javaType="string" jdbcType="VARCHAR" />
+        <result property="tradeDate" column="trade_date" javaType="string" jdbcType="VARCHAR" />
+        <result property="openPrice" column="open_price" javaType="double" jdbcType="DOUBLE" />
+        <result property="highPrice" column="high_price" javaType="double" jdbcType="DOUBLE" />
+        <result property="lowPrice" column="low_price" javaType="double" jdbcType="DOUBLE" />
+        <result property="closePrice" column="close_price" javaType="double" jdbcType="DOUBLE" />
+        <result property="tradeQty" column="trade_qty" javaType="double" jdbcType="DOUBLE" />
+        <result property="tradeMoney" column="trade_money" javaType="double" jdbcType="DOUBLE" />
+        <result property="updateTime" column="update_time" javaType="long" jdbcType="BIGINT" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        stock_code, trade_date, open_price, high_price, low_price, close_price, trade_qty, trade_money, update_time
+    </sql>
+
+    <select id="getMaxDateOfStock" parameterType="java.lang.String" resultType="String">
+        select max(trade_date)
+        from day_quote
+        where stock_code=#{stockCode}
+    </select>
+
+    <insert id="insertDayQuotes" parameterType="ArrayList">
+        INSERT INTO day_quote(<include refid="Base_Column_List" />)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+        (#{item.stockCode,jdbcType=VARCHAR},
+              #{item.tradeDate,jdbcType=VARCHAR},
+              #{item.openPrice,jdbcType=DOUBLE},
+              #{item.highPrice,jdbcType=DOUBLE},
+              #{item.lowPrice,jdbcType=DOUBLE},
+              #{item.closePrice,jdbcType=DOUBLE},
+              #{item.tradeQty,jdbcType=DOUBLE},
+              #{item.tradeMoney,jdbcType=DOUBLE},
+              #{item.updateTime,jdbcType=BIGINT})
+        </foreach>
+    </insert>
+
+    <select id="getStockQuotesByStockCode" parameterType="com.soustock.stockquote.po.DayQuotePageCdtVo"
+            resultMap="stockQuoteResultMap">
+        select <include refid="Base_Column_List" />
+        from day_quote
+        where stock_code=#{stockCode}
+        <choose>
+            <when test="isTradeDateAsc">
+                order by trade_date asc
+            </when>
+            <otherwise>
+                order by trade_date desc
+            </otherwise>
+        </choose>
+        limit #{rowNum,jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+    </select>
+
+    <select id="getQuoteCountOfStockCode" parameterType="java.lang.String" resultType="INTEGER">
+        select count(*)
+        from day_quote
+        where stock_code=#{stockCode}
+    </select>
+
+    <select id="getStockQuotesByStockCodeCount" parameterType="com.soustock.stockquote.po.DayQuoteCdtVo"
+            resultMap="stockQuoteResultMap">
+        select <include refid="Base_Column_List" />
+        from day_quote
+        where stock_code=#{stockCode}
+        order by trade_date desc
+        limit 0,#{recentlyCount, jdbcType=INTEGER}
+    </select>
+
+</mapper>

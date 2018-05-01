@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding= "UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="com.soustock.stockquote" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+				<!-- MIME是服务器通知客户机传送文件是什么类型的主要方法，客户机浏览器也通过MIME告诉服务器它的参数。 -->
+				<!-- 在网上，如果接收到的文件没有MIME头，就默认它为HTML格式。 -->
+				<!-- 但这样也不好，因为当MIME的包头是text/plain时，浏览器将直接显示而不关心它的什么字体，颜色之类的参数 -->
+				<!-- 以html网页形式发送 -->
+				<!-- <property name="supportedMediaTypes" value="text/html" /> -->
+				<!-- text/plain是以纯文本格式发送的 -->
+				<property name="supportedMediaTypes" value="text/plain" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<!-- 根据客户端的不同的请求决定不同的view进行响应, 如 /blog/1.json -->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<!-- 设置为true以忽略对Accept Header的支持-->
+		<property name="ignoreAcceptHeader" value="true"/>
+		<!-- 在没有扩展名时即: "/user/1" 时的默认展现形式 -->
+		<property name="defaultContentType" value="text/html"/>
+
+		<!-- 扩展名至mimeType的映射,即 /user.json => application/json -->
+		<property name="mediaTypes">
+			<map>
+				<entry key="json" value="application/json" />
+			</map>
+		</property>
+		<!-- 用于开启 /userinfo/123?format=json 的支持 -->
+		<property name="favorParameter" value="false"/>
+		<property name="viewResolvers">
+			<list>
+				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+					<property name="prefix" value="/WEB-INF/views/"/>
+					<property name="suffix" value=".jsp"></property>
+				</bean>
+			</list>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<!-- for application/json -->
+				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+			</list>
+		</property>
+	</bean>
+
+	<!--&lt;!&ndash; 对静态资源文件的访问 &ndash;&gt;-->
+	<!--&lt;!&ndash; <mvc:default-servlet-handler/> &ndash;&gt;-->
+	<!--<mvc:resources mapping="/images/**" location="/images/" cache-period="31556926"/>-->
+	<!--<mvc:resources mapping="/js/**" location="/js/" cache-period="31556926"/>-->
+	<!--<mvc:resources mapping="/css/**" location="/css/" cache-period="31556926"/>-->
+
+</beans>

@@ -1,22 +1,27 @@
-# Compiled class file
-*.class
+node_modules
 
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# ignore .svn metadata files
+.svn
+# ignore Maven generated target folders
+target
+# ignore eclipse files
+.project
+.classpath
+.settings
+.scala_dependencies
+.externalToolBuilders
+.factorypath
+# ignore IDEA files
+*.iml
+*.ipr
+*.iws
+.idea
+.idea/libraries
+.DS_Store
+atlassian-ide-plugin.xml
+maven-ant-tasks.jar
+test-output
+classes
+out
+log
+logs
