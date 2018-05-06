@@ -1,8 +1,8 @@
 package com.soustock.stockquote.crawl.task;
 
 
-import com.soustock.stockquote.dao.DayQuoteDao;
-import com.soustock.stockquote.po.StockQuotePo;
+import com.soustock.stockquote.dao.FuquanFactorDao;
+import com.soustock.stockquote.po.FuquanFactorPo;
 import com.soustock.stockquote.utils.DateUtity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,15 +20,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by xuyufei on 2015/9/27.
- * 处理单个股票
+ * 处理单个股票的复权因子
  */
-public class DayQuoteCrawlThread implements Runnable {
+public class FuquanFactorCrawlThread implements Runnable {
 
-    private final static Log logger = LogFactory.getLog(DayQuoteCrawlThread.class);
+    private final static Log logger = LogFactory.getLog(FuquanFactorCrawlThread.class);
 
     private String listDate;
 
-    private DayQuoteDao dayQuoteDao;
+    private FuquanFactorDao fuquanFactorDao;
 
     /**
      * 股票代码
@@ -53,36 +53,35 @@ public class DayQuoteCrawlThread implements Runnable {
         this.stockIndexAi = stockIndexAi;
     }
 
-    public DayQuoteCrawlThread(String stockCode) {
+    public FuquanFactorCrawlThread(String stockCode) {
         this.stockCode = stockCode;
     }
 
     @Override
     public void run() {
         int stockIndex = stockIndexAi.incrementAndGet();
-        logger.info(String.format("Day quote crawl: %d/%d, %s...", stockIndex, stockCount, stockCode));
+        logger.info(String.format("Fuquan factor crawl: %d/%d, %s...", stockIndex, stockCount, stockCode));
         try {
-            fetchQuoteForEachStock(stockCode);
-            logger.info(String.format("Day quote crawl: %d/%d, %s ...ok.", stockIndex, stockCount, stockCode));
+            fetchFuquanFactorForEachStock(stockCode);
+            logger.info(String.format("Fuquan factor crawl: %d/%d, %s ...ok.", stockIndex, stockCount, stockCode));
         } catch (IOException e) {
-            logger.info(String.format("Day quote crawl: %d/%d, %s ...failure, the detail cause is:" + e.getMessage(), stockIndex, stockCount, stockCode), e);
+            logger.info(String.format("Fuquan factor crawl: %d/%d, %s ...failure, the detail cause is:" + e.getMessage(), stockIndex, stockCount, stockCode), e);
         }
     }
 
-    private void fetchQuoteForEachStock(String stockCode) throws IOException {
-        String maxDate = dayQuoteDao.getMaxDateOfStock(stockCode);
-        getQuoteObjs(stockCode, listDate, maxDate);
+    private void fetchFuquanFactorForEachStock(String stockCode) throws IOException {
+        String maxDate = fuquanFactorDao.getMaxDateOfStockFuquan(stockCode);
+        fetchFuquanFactors(stockCode, listDate, maxDate);
     }
 
     /**
      * 获取某个股票的行情
-     *
      * @param stockCode
      * @param maxDate   返还的行情必须大于maxDate，便于增量下载
      * @return
      * @throws IOException
      */
-    public void getQuoteObjs(String stockCode, final String listDate, final String maxDate) throws IOException {
+    private void fetchFuquanFactors(String stockCode, final String listDate, final String maxDate) throws IOException {
         Date dtNow = new Date();
         if (DateUtity.dateToDateStr(dtNow).equals(maxDate)) {//当天已经更新，则无需下载
             return;
@@ -101,7 +100,9 @@ public class DayQuoteCrawlThread implements Runnable {
                 fromJidu = DateUtity.getJidu(dtMaxDate);
             }
 
-            String urlFormat = "http://vip.stock.finance.sina.com.cn/corp/go.php/vMS_MarketHistory/stockid/%s.phtml?year=%d&jidu=%d";
+
+            int rowIndex = 0;
+            String urlFormat = "http://vip.stock.finance.sina.com.cn/corp/go.php/vMS_FuQuanMarketHistory/stockid/%s.phtml?year=%d&jidu=%d";
             while ((fromYear * 4 + fromJidu) <= (toYear * 4 + toJidu)) {
                 String url = String.format(urlFormat, stockCode.substring(2), fromYear, fromJidu);
                 Document doc = null;
@@ -127,28 +128,25 @@ public class DayQuoteCrawlThread implements Runnable {
                 try {
                     Element table = doc.getElementById("FundHoldSharesTable");
                     if (table != null) {
-                        List<StockQuotePo> insertObjs = new ArrayList<>();
+                        List<FuquanFactorPo> insertObjs = new ArrayList<>();
                         Elements trs = table.getElementsByTag("tr");
                         for (int index = trs.size() - 1; index >= 2; index--) {
                             Element tr = trs.get(index);
                             Elements tds = tr.getElementsByTag("td");
                             String dtStr = tds.get(0).text().trim().replace("-", "");
                             if ((maxDate == null) || (dtStr.compareTo(maxDate) > 0)) {
-                                StockQuotePo insertObj = new StockQuotePo();
+                                FuquanFactorPo insertObj = new FuquanFactorPo();
                                 insertObj.setStockCode(stockCode);
                                 insertObj.setTradeDate(dtStr);
-                                insertObj.setOpenPrice(Double.parseDouble(tds.get(1).text().trim()));
-                                insertObj.setHighPrice(Double.parseDouble(tds.get(2).text().trim()));
-                                insertObj.setLowPrice(Double.parseDouble(tds.get(4).text().trim()));
-                                insertObj.setClosePrice(Double.parseDouble(tds.get(3).text().trim()));
-                                insertObj.setTradeQty(Double.parseDouble(tds.get(5).text().trim()));
-                                insertObj.setTradeMoney(Double.parseDouble(tds.get(6).text().trim()));
+                                insertObj.setFactor(Double.parseDouble(tds.get(7).text().trim()));
                                 insertObj.setUpdateTime(System.currentTimeMillis());
                                 insertObjs.add(insertObj);
                             }
                         }
                         if (!insertObjs.isEmpty()) {
-                            dayQuoteDao.insertDayQuotes(insertObjs);
+                            fuquanFactorDao.insertFuquanFactors(insertObjs);
+                            rowIndex += insertObjs.size();
+                            logger.info(String.format("stockCode: %s, rowIndex: %d", stockCode, rowIndex));
                         }
                     }
                 } catch (Exception ex) {
@@ -169,11 +167,11 @@ public class DayQuoteCrawlThread implements Runnable {
         }
     }
 
-    public void setListDate(String listDate) {
-        this.listDate = listDate;
+    public void setFuquanFactorDao(FuquanFactorDao fuquanFactorDao) {
+        this.fuquanFactorDao = fuquanFactorDao;
     }
 
-    public void setDayQuoteDao(DayQuoteDao dayQuoteDao) {
-        this.dayQuoteDao = dayQuoteDao;
+    public void setListDate(String listDate) {
+        this.listDate = listDate;
     }
 }

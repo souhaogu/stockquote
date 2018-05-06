@@ -46,4 +46,17 @@ public class StockBasicController {
         map.put("result", stockSimpleVo);
         return map;
     }
+
+
+    @RequestMapping(value = "/refreshCache", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> refreshCache(HttpServletRequest request) throws Exception {
+        stockBasicService.refreshCache();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("isSucc", "true");
+        return map;
+    }
+
+
 }

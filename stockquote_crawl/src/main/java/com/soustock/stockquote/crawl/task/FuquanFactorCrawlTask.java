@@ -1,14 +1,14 @@
 package com.soustock.stockquote.crawl.task;
 
+
 import com.soustock.stockquote.crawl.cache.StockListDateCache;
 import com.soustock.stockquote.crawl.common.BaseCrawlTask;
-import com.soustock.stockquote.dao.DayQuoteDao;
+import com.soustock.stockquote.dao.FuquanFactorDao;
 import com.soustock.stockquote.exception.BusinessException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -19,28 +19,28 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 股票行情抓取
  */
 @Component
-public class DayQuoteCrawlTask extends BaseCrawlTask {
+public class FuquanFactorCrawlTask extends BaseCrawlTask {
 
-    private final static Log logger = LogFactory.getLog(DayQuoteCrawlTask.class);
+    private final static Log logger = LogFactory.getLog(FuquanFactorCrawlTask.class);
 
     @Autowired
     private StockListDateCache stockListDateCache;
 
     @Autowired
-    private DayQuoteDao dayQuoteDao;
+    private FuquanFactorDao fuquanFactorDao;
 
     @Override
     protected void process() throws BusinessException {
         try {
-            Map<String, String> stockCodeAndListDates = stockListDateCache.getListDateOfAllStock();
+            Map<String, String> stockCodeAndListDateMap = stockListDateCache.getListDateOfAllStock();
             ThreadPoolExecutor executorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
             AtomicInteger stockIndex = new AtomicInteger(0);
-            int stockCount = stockCodeAndListDates.size();
-            for (Map.Entry<String, String> entry: stockCodeAndListDates.entrySet()) {
+            int stockCount = stockCodeAndListDateMap.size();
+            for (Map.Entry<String, String> entry: stockCodeAndListDateMap.entrySet()) {
                 String stockCode = entry.getKey();
                 String listDate = entry.getValue();
-                DayQuoteCrawlThread unitTask = new DayQuoteCrawlThread(stockCode);
-                unitTask.setDayQuoteDao(dayQuoteDao);
+                FuquanFactorCrawlThread unitTask = new FuquanFactorCrawlThread(stockCode);
+                unitTask.setFuquanFactorDao(fuquanFactorDao);
                 unitTask.setListDate(listDate);
                 unitTask.setStockIndexAi(stockIndex);
                 unitTask.setStockCount(stockCount);
@@ -62,12 +62,12 @@ public class DayQuoteCrawlTask extends BaseCrawlTask {
 
     @Override
     public String getTaskName() {
-        return "day_quote";
+        return "fuquan_factor";
     }
 
     @Override
     public int getExecuteOrder() {
-        return 2;
+        return 1;
     }
 
 }

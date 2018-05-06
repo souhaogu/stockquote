@@ -1,9 +1,10 @@
 package com.soustock.stockquote.crawl.task;
 
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.soustock.stockquote.crawl.cache.StockCodeCache;
+import com.soustock.stockquote.crawl.cache.StockListDateCache;
 import com.soustock.stockquote.crawl.common.BaseCrawlTask;
 import com.soustock.stockquote.crawl.connect.XueqiuConnector;
 import com.soustock.stockquote.dao.StockBasicDao;
@@ -17,7 +18,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
     private StockBasicDao stockBasicDao;
 
     @Autowired
-    private StockCodeCache stockCodeCache;
+    private StockListDateCache stockListDateCache;
 
     @Override
     protected void process() throws BusinessException {
@@ -44,7 +44,7 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
                 procMarket(marketName);
             }
             //更新缓存
-            stockCodeCache.reset();
+            stockListDateCache.reset();
         } catch (Exception ex) {
             throw new BusinessException(ex);
         }
@@ -52,7 +52,7 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
 
     @Override
     public String getTaskName() {
-        return "抓取股票基本信息";
+        return "stock_basic";
     }
 
     @Override
@@ -65,11 +65,11 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
         long countInDb = stockBasicDao.getStockCountOfMarket(marketName);
         long countFromWeb = getCountFromWeb(marketName);
         if (countFromWeb == countInDb) {
-            logger.info(String.format("市场：%s，未发现新的股票代码，抓取任务不需执行.", marketName));
+            logger.info(String.format("market: %s, can not find a new stock, so exit the task.", marketName));
         } else {
-            logger.info(String.format("市场：%s，新的股票代码被发现，抓取任务开始执行...", marketName));
+            logger.info(String.format("market: %s, some new stocks are be found, so the crawl task is beginning...", marketName));
             fetchDataFromWeb(marketName, countInDb, countFromWeb - countInDb);
-            logger.info(String.format("市场：%s, 抓取任务执行完毕.", marketName));
+            logger.info(String.format("market: %s, the crawl task is done.", marketName));
         }
     }
 
@@ -81,9 +81,9 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
         int pageStart = (int) Math.ceil((fetchStart + 1.0) * 1.0 / pageSize);
         int pageEnd = (int) Math.ceil((fetchStart + fetchCount) * 1.0 / pageSize);
         int pageCount = pageEnd - pageStart + 1;
-        logger.info(String.format("发现%d条记录，以%d条为一页，需要下载%d页.", fetchCount, pageSize, pageCount));
+        logger.info(String.format("found %d stocks，make %d row as one page，so need download %d pages.", fetchCount, pageSize, pageCount));
         for (int pageNum = pageStart; pageNum <= pageEnd; pageNum++) {
-            logger.info(String.format("第%d页正在下载...", pageNum));
+            logger.info(String.format("Now the page %d will be download...", pageNum));
             String requestUrl = "https://xueqiu.com/proipo/query.json";
             Map<String, String> paramaters = new HashMap<>();
             paramaters.put("page", String.valueOf(pageNum)); //先下载上市日期早的
@@ -94,7 +94,7 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
             paramaters.put("type", "quote");
             paramaters.put("stockType", marketName);
             String jsonStr = XueqiuConnector.sendGet(requestUrl, paramaters, null);
-            logger.info(String.format("第%d页已经完成下载.", pageNum));
+            logger.info(String.format("the %d page has been downloaded.", pageNum));
 
             logger.info(String.format("第%d页正在解析, 即将写入数据库...", pageNum));
             JSONObject jsonObject = JSON.parseObject(jsonStr);
@@ -132,7 +132,7 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
                 break;
             }
 
-            logger.info(String.format("第%d页解析完毕, 并写入数据库.", pageNum));
+            logger.info(String.format("the page '%d' is analyzed, and written into data store.", pageNum));
         }
     }
 

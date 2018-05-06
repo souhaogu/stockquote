@@ -16,4 +16,8 @@ public interface StockBasicService {
 
     StockSimpleVo getStockBasicByStockCode(String stockCode) throws Exception;
 
+    /**
+     * 重新刷新缓存
+     */
+    void refreshCache();
 }

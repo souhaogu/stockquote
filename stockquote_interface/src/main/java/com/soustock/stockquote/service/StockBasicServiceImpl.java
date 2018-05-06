@@ -22,21 +22,35 @@ public class StockBasicServiceImpl implements StockBasicService {
 
     private List<StockSimpleVo> stockSimpleVoList = new ArrayList<>(4000);
 
+    private volatile boolean isBusy = false;
+
     @PostConstruct
-    public void init() throws Exception {
+    public void init() {
+        List<StockSimpleVo> retList = getStockSimpleVoList();
+
+        isBusy = true;
+        stockSimpleVoList = retList;
+        isBusy = false;
+    }
+
+    private List<StockSimpleVo> getStockSimpleVoList(){
+        List<StockSimpleVo> retList = new ArrayList<>(4000);
         List<StockBasicPo> stockBasicPoList = stockBasicDao.getAllStockBasics();
         for (StockBasicPo stockBasicPo: stockBasicPoList ){
             StockSimpleVo stockSimpleVo = new StockSimpleVo();
             stockSimpleVo.setStockCode(stockBasicPo.getStockCode());
             stockSimpleVo.setPyName(stockBasicPo.getPyName());
             stockSimpleVo.setStockName(stockBasicPo.getStockName());
-            stockSimpleVoList.add(stockSimpleVo);
+            retList.add(stockSimpleVo);
         }
+        return retList;
     }
 
     private final static int FETCH_COUNT_LIKESTR = 10;
     @Override
     public List<StockSimpleVo> getStockSimpleVosOfLikeStr(String likeStr) throws Exception {
+        waitForNotBusy();
+
         likeStr = likeStr.toUpperCase();
 
         List<StockSimpleVo> retList = new ArrayList<>(FETCH_COUNT_LIKESTR);
@@ -54,13 +68,29 @@ public class StockBasicServiceImpl implements StockBasicService {
         return retList;
     }
 
+    private void waitForNotBusy(){
+        while (isBusy){
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public StockSimpleVo getStockBasicByStockCode(String stockCode) throws Exception {
+        waitForNotBusy();
         StockBasicPo stockBasicPo = stockBasicDao.getStockBasicByStockCode(stockCode);
         StockSimpleVo stockSimpleVo = new StockSimpleVo();
         stockSimpleVo.setStockCode(stockBasicPo.getStockCode());
         stockSimpleVo.setPyName(stockBasicPo.getPyName());
         stockSimpleVo.setStockName(stockBasicPo.getStockName());
         return stockSimpleVo;
+    }
+
+    @Override
+    public void refreshCache() {
+        this.init();
     }
 }

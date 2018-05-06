@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "classpath:/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.soustock.stockquote.mapper.FuquanFactorMapper">
+    <resultMap id="stockQuoteResultMap" type="com.soustock.stockquote.po.FuquanFactorPo">
+        <result property="stockCode" column="stock_code" javaType="string" jdbcType="VARCHAR" />
+        <result property="tradeDate" column="trade_date" javaType="string" jdbcType="VARCHAR" />
+        <result property="factor" column="factor" javaType="double" jdbcType="DOUBLE" />
+        <result property="updateTime" column="update_time" javaType="long" jdbcType="BIGINT" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        stock_code, trade_date, factor, update_time
+    </sql>
+
+    <select id="getMaxDateOfStockFuquan" parameterType="java.lang.String" resultType="String">
+        select max(trade_date)
+        from fuquan_factor
+        where stock_code=#{stockCode}
+    </select>
+
+    <insert id="insertFuquanFactors" parameterType="ArrayList">
+        INSERT INTO fuquan_factor(<include refid="Base_Column_List" />)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+        (#{item.stockCode,jdbcType=VARCHAR},
+              #{item.tradeDate,jdbcType=VARCHAR},
+              #{item.factor,jdbcType=DOUBLE},
+              #{item.updateTime,jdbcType=BIGINT})
+        </foreach>
+    </insert>
+
+    <select id="getStockQuotesByStockCodeCount" parameterType="com.soustock.stockquote.po.DayQuoteCdtVo"
+            resultMap="stockQuoteResultMap">
+        select <include refid="Base_Column_List" />
+        from fuquan_factor
+        where stock_code=#{stockCode}
+        order by trade_date desc
+        limit 0,#{recentlyCount, jdbcType=INTEGER}
+    </select>
+
+</mapper>
