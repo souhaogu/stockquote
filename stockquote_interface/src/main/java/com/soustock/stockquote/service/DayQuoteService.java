@@ -1,6 +1,7 @@
 package com.soustock.stockquote.service;
 
 
+import com.soustock.stockquote.common.FuquanKind;
 import com.soustock.stockquote.vo.DayQuoteVo;
 import java.util.List;
 
@@ -10,5 +11,5 @@ import java.util.List;
 public interface DayQuoteService {
 
 
-    List<DayQuoteVo> queryQuoteData(String stockCode, int recentlyCount) throws Exception;
+    List<DayQuoteVo> queryQuoteData(String stockCode, int recentlyCount, FuquanKind fuquanKind ) throws Exception;
 }
