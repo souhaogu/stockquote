@@ -100,7 +100,7 @@
     </dependencies>
 
     <build>
-        <finalName>stockquote_interface</finalName>
+        <finalName>stock_quote</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
