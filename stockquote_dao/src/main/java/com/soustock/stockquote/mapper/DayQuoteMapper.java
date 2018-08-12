@@ -1,6 +1,7 @@
 package com.soustock.stockquote.mapper;
 
 import com.soustock.stockquote.po.DayQuoteCdtVo;
+import com.soustock.stockquote.po.DayQuoteDateCdtVo;
 import com.soustock.stockquote.po.DayQuotePageCdtVo;
 import com.soustock.stockquote.po.StockQuotePo;
 
@@ -32,6 +33,17 @@ public interface DayQuoteMapper {
 
     int getQuoteCountOfStockCode(String stockCode);
 
+    /**
+     * 获取最近多少条行情数据
+     * @param dayQuoteCdtVo
+     * @return 降序排列返回结果
+     */
     List<StockQuotePo> getStockQuotesByStockCodeCount(DayQuoteCdtVo dayQuoteCdtVo);
 
+    /**
+     * 按日期获取行情数据
+     * @param dayQuoteDateCdtVo
+     * @return 升序排列返回结果
+     */
+    List<StockQuotePo> getStockQuotesByStockCodeDate(DayQuoteDateCdtVo dayQuoteDateCdtVo);
 }

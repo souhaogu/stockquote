@@ -2,6 +2,7 @@ package com.soustock.stockquote.mapper;
 
 
 import com.soustock.stockquote.po.DayQuoteCdtVo;
+import com.soustock.stockquote.po.DayQuoteDateCdtVo;
 import com.soustock.stockquote.po.FuquanFactorPo;
 import java.util.List;
 
@@ -20,4 +21,5 @@ public interface FuquanFactorMapper {
 
     List<FuquanFactorPo> getFuquanFactorsByStockCodeCount(DayQuoteCdtVo dayQuoteCdtVo);
 
+    List<FuquanFactorPo> getFuquanFactorsByStockCodeDate(DayQuoteDateCdtVo dayQuoteDateCdtVo);
 }

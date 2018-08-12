@@ -21,6 +21,10 @@ public class DateUtity {
 
     public final static long MS_OF_MINUTE = MS_OF_SECOND * 60;
 
+    public final static long MS_OF_HOUR = MS_OF_MINUTE * 60;
+
+    public final static long MS_OF_DAY = MS_OF_HOUR * 24;
+
     private final static Log logger = LogFactory.getLog(DateUtity.class);
 
     public static Date parseXueqiuFormatToDate(String xueqiuDtStr) throws BusinessException {

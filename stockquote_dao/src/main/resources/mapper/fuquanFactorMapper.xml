@@ -41,4 +41,12 @@
         limit 0,#{recentlyCount, jdbcType=INTEGER}
     </select>
 
+    <select id="getFuquanFactorsByStockCodeDate" parameterType="com.soustock.stockquote.po.DayQuoteDateCdtVo"
+            resultMap="fuquanFactorResultMap">
+        select <include refid="Base_Column_List" />
+        from fuquan_factor
+        where stock_code=#{stockCode} and trade_date &gt;= #{bgnDate} and trade_date &lt;= #{endDate}
+        order by trade_date desc
+    </select>
+
 </mapper>

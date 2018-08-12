@@ -74,4 +74,12 @@
         limit 0,#{recentlyCount, jdbcType=INTEGER}
     </select>
 
+    <select id="getStockQuotesByStockCodeDate" parameterType="com.soustock.stockquote.po.DayQuoteDateCdtVo"
+            resultMap="stockQuoteResultMap">
+        select <include refid="Base_Column_List" />
+        from day_quote
+        where stock_code=#{stockCode} and trade_date &gt;= #{bgnDate} and trade_date &lt;= #{endDate}
+        order by trade_date desc
+    </select>
+
 </mapper>

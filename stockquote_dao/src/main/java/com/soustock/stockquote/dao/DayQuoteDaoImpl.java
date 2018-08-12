@@ -1,10 +1,7 @@
 package com.soustock.stockquote.dao;
 
 import com.soustock.stockquote.mapper.DayQuoteMapper;
-import com.soustock.stockquote.po.DayQuoteCdtVo;
-import com.soustock.stockquote.po.DayQuotePageCdtVo;
-import com.soustock.stockquote.po.PageList;
-import com.soustock.stockquote.po.StockQuotePo;
+import com.soustock.stockquote.po.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -43,5 +40,10 @@ public class DayQuoteDaoImpl implements DayQuoteDao {
     @Override
     public List<StockQuotePo> getStockQuotesByStockCodeCount(DayQuoteCdtVo dayQuoteCdtVo){
         return dayQuoteMapper.getStockQuotesByStockCodeCount(dayQuoteCdtVo);
+    }
+
+    @Override
+    public List<StockQuotePo> getStockQuotesByStockCodeDate(DayQuoteDateCdtVo dayQuoteDateCdtVo){
+        return dayQuoteMapper.getStockQuotesByStockCodeDate(dayQuoteDateCdtVo);
     }
 }

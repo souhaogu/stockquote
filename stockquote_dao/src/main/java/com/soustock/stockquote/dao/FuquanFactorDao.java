@@ -2,6 +2,7 @@ package com.soustock.stockquote.dao;
 
 
 import com.soustock.stockquote.po.DayQuoteCdtVo;
+import com.soustock.stockquote.po.DayQuoteDateCdtVo;
 import com.soustock.stockquote.po.FuquanFactorPo;
 import java.util.List;
 
@@ -18,5 +19,7 @@ public interface FuquanFactorDao {
     void insertFuquanFactors(List<FuquanFactorPo> fuquanFactorPos);
 
     List<FuquanFactorPo> getFuquanFactorsByStockCodeCount(DayQuoteCdtVo dayQuoteCdtVo);
+
+    List<FuquanFactorPo> getFuquanFactorsByStockCodeDate(DayQuoteDateCdtVo dayQuoteDateCdtVo);
 
 }

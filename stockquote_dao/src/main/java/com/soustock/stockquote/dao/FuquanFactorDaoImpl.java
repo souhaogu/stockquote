@@ -3,6 +3,7 @@ package com.soustock.stockquote.dao;
 
 import com.soustock.stockquote.mapper.FuquanFactorMapper;
 import com.soustock.stockquote.po.DayQuoteCdtVo;
+import com.soustock.stockquote.po.DayQuoteDateCdtVo;
 import com.soustock.stockquote.po.FuquanFactorPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,5 +32,10 @@ public class FuquanFactorDaoImpl implements FuquanFactorDao {
     @Override
     public List<FuquanFactorPo> getFuquanFactorsByStockCodeCount(DayQuoteCdtVo dayQuoteCdtVo) {
         return fuquanFactorMapper.getFuquanFactorsByStockCodeCount(dayQuoteCdtVo);
+    }
+
+    @Override
+    public List<FuquanFactorPo> getFuquanFactorsByStockCodeDate(DayQuoteDateCdtVo dayQuoteDateCdtVo){
+        return fuquanFactorMapper.getFuquanFactorsByStockCodeDate(dayQuoteDateCdtVo);
     }
 }

@@ -12,4 +12,8 @@ public interface DayQuoteService {
 
 
     List<DayQuoteVo> queryQuoteData(String stockCode, int recentlyCount, FuquanKind fuquanKind ) throws Exception;
+
+
+    List<DayQuoteVo> queryQuoteByDate(String stockCode, String bgnDate, String endDate, FuquanKind fuquanKind ) throws Exception;
+
 }
