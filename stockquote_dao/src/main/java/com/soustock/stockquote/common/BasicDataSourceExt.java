@@ -1,7 +1,7 @@
 package com.soustock.stockquote.common;
 
-import org.apache.commons.dbcp.BasicDataSource;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
@@ -27,6 +27,7 @@ public class BasicDataSourceExt extends BasicDataSource {
     public <T> T unwrap(Class<T> iface) throws SQLException {
         return null;
     }
+
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return false;
