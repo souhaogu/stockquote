@@ -25,6 +25,13 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
+	<!--<mvc:interceptors>-->
+		<!--<mvc:interceptor>-->
+			<!--<mvc:mapping path="/**"/>-->
+			<!--<bean class="com.soustock.stockquote.interceptor.CORSInterceptor"/>-->
+		<!--</mvc:interceptor>-->
+	<!--</mvc:interceptors>-->
+
 	<!-- 根据客户端的不同的请求决定不同的view进行响应, 如 /blog/1.json -->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<!-- 设置为true以忽略对Accept Header的支持-->
@@ -57,6 +64,7 @@
 			</list>
 		</property>
 	</bean>
+
 
 	<!--&lt;!&ndash; 对静态资源文件的访问 &ndash;&gt;-->
 	<!--&lt;!&ndash; <mvc:default-servlet-handler/> &ndash;&gt;-->
