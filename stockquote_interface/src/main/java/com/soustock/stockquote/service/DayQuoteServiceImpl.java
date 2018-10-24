@@ -65,6 +65,15 @@ public class DayQuoteServiceImpl implements DayQuoteService {
         }
     }
 
+    @Override
+    public String getMaxDateOfStock(String stockCode) {
+        return dayQuoteDao.getMaxDateOfStock(stockCode);
+    }
+
+    @Override
+    public void insertDayQuotes(List<StockQuotePo> stockQuotePos) {
+        dayQuoteDao.insertDayQuotes(stockQuotePos);
+    }
 
 
     private TreeMap<String, Double> turnFuquanFactorMap(List<FuquanFactorPo> fuquanFactorPoList){

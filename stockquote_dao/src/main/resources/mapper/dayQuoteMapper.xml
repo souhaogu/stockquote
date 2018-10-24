@@ -82,4 +82,11 @@
         order by trade_date desc
     </select>
 
+    <select id="getAllStockQuotesByStockCode" parameterType="java.lang.String" resultMap="stockQuoteResultMap">
+        select <include refid="Base_Column_List" />
+        from day_quote
+        where stock_code=#{stockCode}
+        order by trade_date asc
+    </select>
+
 </mapper>

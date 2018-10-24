@@ -57,4 +57,16 @@ public interface StockBasicDao {
      * @return
      */
     List<StockBasicPo> getAllStockBasicsOfMarket(String market);
+
+    /**
+     * 获取某个时间之后更新过的的股票列表
+     * @return
+     */
+    List<StockBasicPo> getStockBasicsAfter(Long updateTime);
+
+    /**
+     * 获取股票基本信息的最大更新时间
+     * @return
+     */
+    Long getMaxUpdatetimeOfStockBasic();
 }

@@ -40,6 +40,18 @@
         select count(*) from stock_basic where market=#{market}
     </select>
 
+    <select id="getMaxUpdatetimeOfStockBasic" resultType="java.lang.Long">
+        select max(update_time) from stock_basic
+    </select>
+
+    <select id="getStockBasicsAfter" parameterType="java.lang.Long"
+            resultMap="stockBasicResultMap">
+        select <include refid="Base_Column_List" />
+        from stock_basic
+        where update_time>#{updateTime,jdbcType=BIGINT}
+        order by update_time asc
+    </select>
+
     <insert id="updateStockBasic" parameterType="com.soustock.stockquote.po.StockBasicPo">
         update stock_basic set stock_name=#{stockName,jdbcType=VARCHAR},
             py_name=#{pyName,jdbcType=VARCHAR},
@@ -53,6 +65,7 @@
             resultMap="stockBasicResultMap">
         select <include refid="Base_Column_List" />
         from stock_basic
+        order by update_time asc
     </select>
 
     <select id="getAllStockBasicsOfMarket" parameterType="java.lang.String"

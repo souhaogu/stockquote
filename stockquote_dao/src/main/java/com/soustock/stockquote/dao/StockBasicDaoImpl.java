@@ -69,5 +69,15 @@ public class StockBasicDaoImpl implements StockBasicDao {
         return stockBasicMapper.getAllStockBasicsOfMarket(market);
     }
 
+    @Override
+    public List<StockBasicPo> getStockBasicsAfter(Long updateTime) {
+        return stockBasicMapper.getStockBasicsAfter(updateTime);
+    }
+
+    @Override
+    public Long getMaxUpdatetimeOfStockBasic() {
+        return stockBasicMapper.getMaxUpdatetimeOfStockBasic();
+    }
+
 
 }

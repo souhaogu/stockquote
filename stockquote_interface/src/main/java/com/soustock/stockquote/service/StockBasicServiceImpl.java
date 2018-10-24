@@ -93,4 +93,26 @@ public class StockBasicServiceImpl implements StockBasicService {
     public void refreshCache() {
         this.init();
     }
+
+    @Override
+    public void insertOrUpdateStockBasics(List<StockBasicPo> stockInfoList) {
+        for (StockBasicPo stockBasicPo: stockInfoList){
+            String stockCode = stockBasicPo.getStockCode();
+            if (null == stockBasicDao.getStockBasicByStockCode(stockCode)){
+                stockBasicDao.insertStockBasic(stockBasicPo);
+            } else {
+                stockBasicDao.updateStockBasic(stockBasicPo);
+            }
+        }
+    }
+
+    @Override
+    public List<StockBasicPo> getStockBasicsAfter(Long updateTime) {
+        return stockBasicDao.getStockBasicsAfter(updateTime);
+    }
+
+    @Override
+    public Long getMaxUpdatetimeOfStockBasic() {
+        return stockBasicDao.getMaxUpdatetimeOfStockBasic();
+    }
 }

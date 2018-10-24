@@ -43,4 +43,7 @@ public interface DayQuoteDao {
      */
     List<StockQuotePo> getStockQuotesByStockCodeDate(DayQuoteDateCdtVo dayQuoteDateCdtVo);
 
+
+    List<StockQuotePo> getAllStockQuotesByStockCode(String stockCode);
+
 }

@@ -98,4 +98,11 @@ public class DateUtity {
         }
     }
 
+    public static String getNextDate(String dateStr) throws ParseException {
+        DateFormat stdFormat = new SimpleDateFormat("yyyyMMdd");
+        Date dt = stdFormat.parse(dateStr);
+        Date nextDt = new Date(dt.getTime() + MS_OF_DAY);
+        return stdFormat.format(nextDt);
+    }
+
 }

@@ -46,4 +46,9 @@ public class DayQuoteDaoImpl implements DayQuoteDao {
     public List<StockQuotePo> getStockQuotesByStockCodeDate(DayQuoteDateCdtVo dayQuoteDateCdtVo){
         return dayQuoteMapper.getStockQuotesByStockCodeDate(dayQuoteDateCdtVo);
     }
+
+    @Override
+    public List<StockQuotePo> getAllStockQuotesByStockCode(String stockCode) {
+        return dayQuoteMapper.getAllStockQuotesByStockCode(stockCode);
+    }
 }

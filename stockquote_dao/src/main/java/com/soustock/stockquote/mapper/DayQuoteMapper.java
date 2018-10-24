@@ -46,4 +46,12 @@ public interface DayQuoteMapper {
      * @return 升序排列返回结果
      */
     List<StockQuotePo> getStockQuotesByStockCodeDate(DayQuoteDateCdtVo dayQuoteDateCdtVo);
+
+
+    /**
+     * 获得某个股票的所有行情数据，按交易日期升序排列
+     * @param stockCode
+     * @return
+     */
+    List<StockQuotePo> getAllStockQuotesByStockCode(String stockCode);
 }

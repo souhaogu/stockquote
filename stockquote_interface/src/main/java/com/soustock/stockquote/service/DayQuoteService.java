@@ -2,6 +2,7 @@ package com.soustock.stockquote.service;
 
 
 import com.soustock.stockquote.common.FuquanKind;
+import com.soustock.stockquote.po.StockQuotePo;
 import com.soustock.stockquote.vo.DayQuoteVo;
 import java.util.List;
 
@@ -16,4 +17,10 @@ public interface DayQuoteService {
 
     List<DayQuoteVo> queryQuoteByDate(String stockCode, String bgnDate, String endDate, FuquanKind fuquanKind ) throws Exception;
 
+    /**
+     * 获取某个股票的行情最大日期(yyyyMMdd)
+     */
+    String getMaxDateOfStock(String stockCode);
+
+    void insertDayQuotes(List<StockQuotePo> stockQuotePos);
 }
