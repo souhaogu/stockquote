@@ -1,15 +1,16 @@
 package com.soustock.stockquote.controller;
 
 
-import com.alibaba.fastjson.JSON;
 import com.soustock.stockquote.po.StockBasicPo;
 import com.soustock.stockquote.service.StockBasicService;
+import com.soustock.stockquote.utils.JsonUtity;
 import com.soustock.stockquote.vo.StockSimpleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +62,7 @@ public class StockBasicController {
     @RequestMapping(value = "/insertOrUpdateStockBasics", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> insertOrUpdateStockBasics(HttpServletRequest request) throws Exception {
-        List<StockBasicPo> stockBasicPoList = (List<StockBasicPo>) JSON.parse(request.getParameter("list"));
+        List<StockBasicPo> stockBasicPoList = (List<StockBasicPo>)JsonUtity.readValueToList(request.getParameter("list"), StockBasicPo.class);
         stockBasicService.insertOrUpdateStockBasics(stockBasicPoList);
         Map<String, Object> map = new HashMap<>();
         map.put("isSucc", "true");

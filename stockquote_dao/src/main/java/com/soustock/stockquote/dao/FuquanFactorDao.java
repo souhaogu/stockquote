@@ -22,4 +22,6 @@ public interface FuquanFactorDao {
 
     List<FuquanFactorPo> getFuquanFactorsByStockCodeDate(DayQuoteDateCdtVo dayQuoteDateCdtVo);
 
+    List<FuquanFactorPo> getAllFuquanFactorsByStockCode(String stockCode);
+
 }

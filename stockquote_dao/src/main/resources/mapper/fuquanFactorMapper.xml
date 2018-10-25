@@ -46,7 +46,15 @@
         select <include refid="Base_Column_List" />
         from fuquan_factor
         where stock_code=#{stockCode} and trade_date &gt;= #{bgnDate} and trade_date &lt;= #{endDate}
-        order by trade_date desc
+        order by trade_date asc
+    </select>
+
+    <select id="getAllFuquanFactorsByStockCode" parameterType="java.lang.String"
+            resultMap="fuquanFactorResultMap">
+        select <include refid="Base_Column_List" />
+        from fuquan_factor
+        where stock_code=#{stockCode}
+        order by trade_date asc
     </select>
 
 </mapper>

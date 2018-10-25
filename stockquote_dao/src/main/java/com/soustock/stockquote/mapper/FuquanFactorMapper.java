@@ -22,4 +22,6 @@ public interface FuquanFactorMapper {
     List<FuquanFactorPo> getFuquanFactorsByStockCodeCount(DayQuoteCdtVo dayQuoteCdtVo);
 
     List<FuquanFactorPo> getFuquanFactorsByStockCodeDate(DayQuoteDateCdtVo dayQuoteDateCdtVo);
+
+    List<FuquanFactorPo> getAllFuquanFactorsByStockCode(String stockCode);
 }

@@ -51,7 +51,7 @@ public class FinanceSummarySyncTask extends BaseSyncTask {
 
     @Override
     public int getExecuteOrder() {
-        return 3;
+        return 6;
     }
 
 }

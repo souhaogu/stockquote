@@ -38,4 +38,9 @@ public class FuquanFactorDaoImpl implements FuquanFactorDao {
     public List<FuquanFactorPo> getFuquanFactorsByStockCodeDate(DayQuoteDateCdtVo dayQuoteDateCdtVo){
         return fuquanFactorMapper.getFuquanFactorsByStockCodeDate(dayQuoteDateCdtVo);
     }
+
+    @Override
+    public List<FuquanFactorPo> getAllFuquanFactorsByStockCode(String stockCode) {
+        return fuquanFactorMapper.getAllFuquanFactorsByStockCode(stockCode);
+    }
 }

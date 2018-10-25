@@ -4,14 +4,15 @@ package com.soustock.stockquote.controller;
 import com.soustock.stockquote.common.FuquanKind;
 import com.soustock.stockquote.po.StockQuotePo;
 import com.soustock.stockquote.service.DayQuoteService;
-import com.soustock.stockquote.utils.AutoPojo;
 import com.soustock.stockquote.utils.DateUtity;
+import com.soustock.stockquote.utils.JsonUtity;
 import com.soustock.stockquote.utils.StringUtity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
@@ -78,7 +79,7 @@ public class DayQuoteController {
     @RequestMapping(value = "/insertDayQuotes", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> insertDayQuotes(HttpServletRequest request) throws Exception {
-        List<StockQuotePo> stockQuotePos = AutoPojo.bindRequestParam(request, List.class);
+        List<StockQuotePo> stockQuotePos = (List<StockQuotePo>) JsonUtity.readValueToList(request.getParameter("list"), StockQuotePo.class);
         dayQuoteService.insertDayQuotes(stockQuotePos);
         Map<String, Object> map = new HashMap<>();
         map.put("isSucc", "true");

@@ -4,11 +4,13 @@ package com.soustock.stockquote.service;
 import com.soustock.stockquote.dao.FuquanFactorDao;
 import com.soustock.stockquote.po.FuquanFactorPo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
  * Created by xuyufei on 2018/10/24.
  */
+@Service("fuquanFactorService")
 public class FuquanFactorServiceImpl implements FuquanFactorService {
 
     @Autowired

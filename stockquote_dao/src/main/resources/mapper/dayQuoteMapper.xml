@@ -79,7 +79,7 @@
         select <include refid="Base_Column_List" />
         from day_quote
         where stock_code=#{stockCode} and trade_date &gt;= #{bgnDate} and trade_date &lt;= #{endDate}
-        order by trade_date desc
+        order by trade_date asc
     </select>
 
     <select id="getAllStockQuotesByStockCode" parameterType="java.lang.String" resultMap="stockQuoteResultMap">

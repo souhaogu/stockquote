@@ -123,8 +123,14 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
                     Date listDate = DateUtity.parseXueqiuFormatToDate(fieldArr.get(2).toString());
                     stockBasicPo.setListDate(DateUtity.dateToDateStr(listDate));
                     stockBasicPo.setMarket(marketName);
-                    stockBasicPo.setUpdateTime(new Date().getTime());
+                    stockBasicPo.setUpdateTime(System.currentTimeMillis());
                     stockBasicDao.insertStockBasic(stockBasicPo);
+                    try {
+                        //故意等1ms，这样所有的时间戳都会不同
+                        Thread.sleep(1L);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

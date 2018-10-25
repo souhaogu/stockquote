@@ -4,7 +4,6 @@ package com.soustock.stockquote.sync.task;
 import com.soustock.stockquote.dao.DayQuoteDao;
 import com.soustock.stockquote.dao.StockBasicDao;
 import com.soustock.stockquote.exception.BusinessException;
-import com.soustock.stockquote.po.DayQuoteCdtVo;
 import com.soustock.stockquote.po.DayQuoteDateCdtVo;
 import com.soustock.stockquote.po.StockBasicPo;
 import com.soustock.stockquote.po.StockQuotePo;
@@ -42,9 +41,13 @@ public class DayQuoteSyncTask extends BaseSyncTask {
     protected void process() throws BusinessException {
         try {
             List<StockBasicPo> stockBasicPoList = stockBasicDao.getAllStockBasics();
+            int stockCount = stockBasicPoList.size();
+            int stockIndex = 0;
             for (StockBasicPo stockBasicPo: stockBasicPoList) {
                 String stockCode = stockBasicPo.getStockCode();
                 syncEveryStock(stockCode);
+                stockIndex ++;
+                logger.info(String.format("Day quote sync: %d/%d, %s...", stockIndex, stockCount, stockCode));
             }
         } catch (Exception ex) {
             throw new BusinessException(ex);
@@ -82,12 +85,12 @@ public class DayQuoteSyncTask extends BaseSyncTask {
                 stockQuotePoListTemp.add(stockQuotePo);
                 index ++;
                 if (index % 100 == 0){
-                    dayQuoteDao.insertDayQuotes(stockQuotePoListTemp);
+                    TargetDataCommon.insertDayQuotes(stockQuotePoListTemp);
                     stockQuotePoListTemp.clear();
                 }
             }
             if (index % 100 > 0){
-                dayQuoteDao.insertDayQuotes(stockQuotePoListTemp);
+                TargetDataCommon.insertDayQuotes(stockQuotePoListTemp);
                 stockQuotePoListTemp.clear();
             }
         }
