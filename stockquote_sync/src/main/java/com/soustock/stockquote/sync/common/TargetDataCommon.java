@@ -17,8 +17,8 @@ import java.util.Map;
  */
 public class TargetDataCommon {
 
-    //private final static String BASE_URL_QUOTE = "https://quote.souhaogu.com";
-    private final static String BASE_URL_QUOTE = "http://localhost:8080/stock_quote";
+    private final static String BASE_URL_QUOTE = "https://quote.souhaogu.cn/stock_quote";
+    //private final static String BASE_URL_QUOTE = "http://localhost:8080/stock_quote";
 
     /**
      * 得到目标数据源的最大更新日期

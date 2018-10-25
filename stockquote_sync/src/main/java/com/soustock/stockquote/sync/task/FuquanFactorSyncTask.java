@@ -92,7 +92,7 @@ public class FuquanFactorSyncTask extends BaseSyncTask {
 
     @Override
     public int getExecuteOrder() {
-        return 0;
+        return 4;
     }
 
 }

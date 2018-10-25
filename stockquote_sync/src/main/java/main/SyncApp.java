@@ -39,7 +39,7 @@ public class SyncApp {
         //创建触发器, 每24小时触发一次，首次触发为启动后5秒
         SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder
                 .simpleSchedule()
-                .withIntervalInHours(24)
+                .withIntervalInHours(6)
                 .repeatForever();
         SimpleTrigger trigger = TriggerBuilder
                 .newTrigger()
