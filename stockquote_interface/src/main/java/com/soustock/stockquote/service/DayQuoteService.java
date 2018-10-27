@@ -20,7 +20,7 @@ public interface DayQuoteService {
     /**
      * 获取某个股票的行情最大日期(yyyyMMdd)
      */
-    String getMaxDateOfStock(String stockCode);
+    String getMaxTradeDateOfStock(String stockCode);
 
     void insertDayQuotes(List<StockQuotePo> stockQuotePos);
 }

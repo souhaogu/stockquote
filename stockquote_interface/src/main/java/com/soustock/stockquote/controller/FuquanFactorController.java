@@ -1,6 +1,7 @@
 package com.soustock.stockquote.controller;
 
 
+import com.soustock.stockquote.common.ReturnMapFactory;
 import com.soustock.stockquote.po.FuquanFactorPo;
 import com.soustock.stockquote.service.FuquanFactorService;
 import com.soustock.stockquote.utils.JsonUtity;
@@ -9,9 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,22 +26,25 @@ public class FuquanFactorController {
 
     @RequestMapping(value = "/getMaxDateOfStockFuquan", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getMaxDateOfStockFuquan(HttpServletRequest request) throws Exception {
-        String stockCode = request.getParameter("stockCode");
-        Map<String, Object> map = new HashMap<>();
-        map.put("isSucc", "true");
-        map.put("result", fuquanFactorService.getMaxDateOfStockFuquan(stockCode));
-        return map;
+    public Map<String, Object> getMaxDateOfStockFuquan(HttpServletRequest request) {
+        try {
+            String stockCode = request.getParameter("stockCode");
+            return ReturnMapFactory.succ("result", fuquanFactorService.getMaxDateOfStockFuquan(stockCode));
+        } catch (Exception ex){
+            return ReturnMapFactory.fail(ex.getMessage());
+        }
     }
 
     @RequestMapping(value = "/insertFuquanFactors", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> insertFuquanFactors(HttpServletRequest request) throws Exception {
-        List<FuquanFactorPo> fuquanFactorPoList = (List<FuquanFactorPo>) JsonUtity.readValueToList(request.getParameter("list"), FuquanFactorPo.class);
-        fuquanFactorService.insertFuquanFactors(fuquanFactorPoList);
-        Map<String, Object> map = new HashMap<>();
-        map.put("isSucc", "true");
-        return map;
+    public Map<String, Object> insertFuquanFactors(HttpServletRequest request) {
+        try {
+            List<FuquanFactorPo> fuquanFactorPoList = (List<FuquanFactorPo>) JsonUtity.readValueToList(request.getParameter("list"), FuquanFactorPo.class);
+            fuquanFactorService.insertFuquanFactors(fuquanFactorPoList);
+            return ReturnMapFactory.succ();
+        } catch (Exception ex){
+            return ReturnMapFactory.fail(ex.getMessage());
+        }
     }
 
 }

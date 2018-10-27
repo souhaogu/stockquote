@@ -1,6 +1,7 @@
 package com.soustock.stockquote.controller;
 
 
+import com.soustock.stockquote.common.ReturnMapFactory;
 import com.soustock.stockquote.po.StockBasicPo;
 import com.soustock.stockquote.service.StockBasicService;
 import com.soustock.stockquote.utils.JsonUtity;
@@ -29,69 +30,59 @@ public class StockBasicController {
     @RequestMapping(value = "/getStockBasicsOfLikeStr", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getStockBasicsOfLikeStr(HttpServletRequest request) throws Exception {
-        String likeStr = request.getParameter("likeStr");
-        List<StockSimpleVo> stockBasicPos = stockBasicService.getStockSimpleVosOfLikeStr(likeStr);
-        Map<String, Object> map = new HashMap<>();
-        map.put("isSucc", "true");
-        map.put("result", stockBasicPos);
-        return map;
+        try {
+            String likeStr = request.getParameter("likeStr");
+            List<StockSimpleVo> stockBasicPos = stockBasicService.getStockSimpleVosOfLikeStr(likeStr);
+            return ReturnMapFactory.succ("result", stockBasicPos);
+        } catch (Exception ex){
+            return ReturnMapFactory.fail(ex.getMessage());
+        }
     }
 
     @RequestMapping(value = "/getStockBasicByStockCode", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getStockBasicByStockCode(HttpServletRequest request) throws Exception {
-        String stockCode = request.getParameter("stockCode");
-        StockSimpleVo stockSimpleVo = stockBasicService.getStockBasicByStockCode(stockCode);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("isSucc", "true");
-        map.put("result", stockSimpleVo);
-        return map;
+    public Map<String, Object> getStockBasicByStockCode(HttpServletRequest request) {
+        try {
+            String stockCode = request.getParameter("stockCode");
+            StockSimpleVo stockSimpleVo = stockBasicService.getStockBasicByStockCode(stockCode);
+            return ReturnMapFactory.succ("result", stockSimpleVo);
+        } catch (Exception ex){
+            return ReturnMapFactory.fail(ex.getMessage());
+        }
     }
-
 
     @RequestMapping(value = "/refreshCache", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> refreshCache(HttpServletRequest request) throws Exception {
-        stockBasicService.refreshCache();
-        Map<String, Object> map = new HashMap<>();
-        map.put("isSucc", "true");
-        return map;
+    public Map<String, Object> refreshCache(HttpServletRequest request) {
+        try {
+            stockBasicService.refreshCache();
+            return ReturnMapFactory.succ();
+        } catch (Exception ex){
+            return ReturnMapFactory.fail(ex.getMessage());
+        }
     }
 
     @RequestMapping(value = "/insertOrUpdateStockBasics", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> insertOrUpdateStockBasics(HttpServletRequest request) throws Exception {
-        List<StockBasicPo> stockBasicPoList = (List<StockBasicPo>)JsonUtity.readValueToList(request.getParameter("list"), StockBasicPo.class);
-        stockBasicService.insertOrUpdateStockBasics(stockBasicPoList);
-        Map<String, Object> map = new HashMap<>();
-        map.put("isSucc", "true");
-        return map;
+    public Map<String, Object> insertOrUpdateStockBasics(HttpServletRequest request) {
+        try {
+            List<StockBasicPo> stockBasicPoList = (List<StockBasicPo>) JsonUtity.readValueToList(request.getParameter("list"), StockBasicPo.class);
+            stockBasicService.insertOrUpdateStockBasics(stockBasicPoList);
+            return ReturnMapFactory.succ();
+        } catch (Exception ex){
+            return ReturnMapFactory.fail(ex.getMessage());
+        }
     }
 
     @RequestMapping(value = "/getMaxUpdatetimeOfStockBasic", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getMaxUpdatetimeOfStockBasic(HttpServletRequest request) throws Exception {
-        Long maxUpdatetime = stockBasicService.getMaxUpdatetimeOfStockBasic();
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("isSucc", "true");
-        map.put("result", maxUpdatetime);
-        return map;
+    public Map<String, Object> getMaxUpdatetimeOfStockBasic(HttpServletRequest request) {
+        try {
+            Long maxUpdatetime = stockBasicService.getMaxUpdatetimeOfStockBasic();
+            return ReturnMapFactory.succ("result", maxUpdatetime);
+        } catch (Exception ex){
+            return ReturnMapFactory.fail(ex.getMessage());
+        }
     }
-
-//    @RequestMapping(value = "/getStockBasicsAfter", method = RequestMethod.GET)
-//    @ResponseBody
-//    public Map<String, Object> getStockBasicsAfter(HttpServletRequest request) throws Exception {
-//        Long updateTime = Long.parseLong(request.getParameter("updateTime"));
-//        List<StockBasicPo> stockBasicPoList = stockBasicService.getStockBasicsAfter(updateTime);
-//
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("isSucc", "true");
-//        map.put("result", stockBasicPoList);
-//        return map;
-//    }
-
-
 
 }

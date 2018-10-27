@@ -66,7 +66,7 @@ public class DayQuoteServiceImpl implements DayQuoteService {
     }
 
     @Override
-    public String getMaxDateOfStock(String stockCode) {
+    public String getMaxTradeDateOfStock(String stockCode) {
         return dayQuoteDao.getMaxDateOfStock(stockCode);
     }
 
