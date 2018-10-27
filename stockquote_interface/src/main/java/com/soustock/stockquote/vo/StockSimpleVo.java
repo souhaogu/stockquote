@@ -24,6 +24,11 @@ public class StockSimpleVo implements Serializable {
      */
     private String pyName;
 
+    /**
+     * 上市日期
+     */
+    private String listDate;
+
     public String getStockCode() {
         return stockCode;
     }
@@ -48,4 +53,11 @@ public class StockSimpleVo implements Serializable {
         this.pyName = pyName;
     }
 
+    public String getListDate() {
+        return listDate;
+    }
+
+    public void setListDate(String listDate) {
+        this.listDate = listDate;
+    }
 }

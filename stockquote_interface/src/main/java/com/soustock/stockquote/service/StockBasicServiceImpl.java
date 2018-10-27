@@ -41,6 +41,7 @@ public class StockBasicServiceImpl implements StockBasicService {
             stockSimpleVo.setStockCode(stockBasicPo.getStockCode());
             stockSimpleVo.setPyName(stockBasicPo.getPyName());
             stockSimpleVo.setStockName(stockBasicPo.getStockName());
+            stockSimpleVo.setListDate(stockBasicPo.getListDate());
             retList.add(stockSimpleVo);
         }
         return retList;
@@ -84,8 +85,9 @@ public class StockBasicServiceImpl implements StockBasicService {
         StockBasicPo stockBasicPo = stockBasicDao.getStockBasicByStockCode(stockCode);
         StockSimpleVo stockSimpleVo = new StockSimpleVo();
         stockSimpleVo.setStockCode(stockBasicPo.getStockCode());
-        stockSimpleVo.setPyName(stockBasicPo.getPyName());
         stockSimpleVo.setStockName(stockBasicPo.getStockName());
+        stockSimpleVo.setPyName(stockBasicPo.getPyName());
+        stockSimpleVo.setListDate(stockBasicPo.getListDate());
         return stockSimpleVo;
     }
 
