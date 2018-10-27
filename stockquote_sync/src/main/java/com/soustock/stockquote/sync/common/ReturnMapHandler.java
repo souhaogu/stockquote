@@ -61,7 +61,7 @@ public class ReturnMapHandler {
             if (retMap != null) {
                 boolean isSucc = (boolean) retMap.get("isSucc");
                 if (!isSucc) {
-                    String errorMsg = (String) retMap.get("errorMsg");
+                    String errorMsg = (String) retMap.get("error");
                     if (!StringUtity.isNullOrEmpty(errorMsg)) {
                         throw new BusinessException(errorMsg);
                     }
@@ -82,7 +82,7 @@ public class ReturnMapHandler {
                         return (T)obj;
                     }
                 } else {
-                    String errorMsg = (String) retMap.get("errorMsg");
+                    String errorMsg = (String) retMap.get("error");
                     if (!StringUtity.isNullOrEmpty(errorMsg)) {
                         throw new BusinessException(errorMsg);
                     }
