@@ -25,7 +25,7 @@ public class FuquanFactorServiceImpl implements FuquanFactorService {
         dayQuoteCdtVo.setStockCode(stockCode);
         dayQuoteCdtVo.setRecentlyCount(1);
         List<FuquanFactorPo> fuquanFactorPoList = fuquanFactorDao.getFuquanFactorsByStockCodeCount(dayQuoteCdtVo);
-        if (ListUtity.isNullOrEmpty(fuquanFactorPoList)){
+        if (!ListUtity.isNullOrEmpty(fuquanFactorPoList)){
             return fuquanFactorPoList.get(0).getFactor();
         } else {
             throw new BusinessException(String.format("股票:[%s]查找最新复权因子失败.", stockCode));
