@@ -6,7 +6,7 @@
         <title>stock_quote</title>
     </head>
     <body>
-        <h1>welcome to quote.souhaogu.cn/stock_quote</h1>
+        <h1>welcome to souhaogu.cn/stock_quote</h1>
         <a href="${root}/stockBasic/getStockBasicsOfLikeStr.do?likeStr=fx">包含"fx"的股票信息列表</a><br>
         <a href="${root}/realtimeQuote/queryRealtimeQuotes.do?stockCode=SH600000&recentlyCount=30">浦发银行最近30分钟的实时行情</a><br>
         <a href="${root}/dayQuote/queryQuoteData.do?stockCode=SH600000&recentlyCount=30">浦发银行最近30天的历史行情</a><br>
