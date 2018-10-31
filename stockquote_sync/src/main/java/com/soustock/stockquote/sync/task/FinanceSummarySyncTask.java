@@ -16,7 +16,7 @@ import java.util.List;
  * Created by xuyufei on 2015/9/19.
  * 股票行情抓取
  */
-@Component
+//@Component
 public class FinanceSummarySyncTask extends BaseSyncTask {
 
     private final static Log logger = LogFactory.getLog(FinanceSummarySyncTask.class);

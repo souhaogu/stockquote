@@ -23,7 +23,8 @@ public class XueqiuConnector {
     }
 
     private static String readXueqiuCookieFromFile() throws IOException {
-        String xueqiu_cookie_file = "/root/stock_quote/xueqiu_cookie.txt";
+        //String xueqiu_cookie_file = "/root/stock_quote/xueqiu_cookie.txt";
+        String xueqiu_cookie_file = "/root/crawl_app/xueqiu_cookie.txt";
         TxtFileReader txtFileReader = new TxtFileReader(xueqiu_cookie_file);
         try {
             return txtFileReader.readLine();

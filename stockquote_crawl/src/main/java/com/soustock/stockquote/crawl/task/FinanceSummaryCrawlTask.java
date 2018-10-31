@@ -16,9 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by xuyufei on 2015/9/19.
- * 股票行情抓取
+ * 财务摘要抓取
  */
-@Component
+//@Component
 public class FinanceSummaryCrawlTask extends BaseCrawlTask {
 
     private final static Log logger = LogFactory.getLog(FinanceSummaryCrawlTask.class);

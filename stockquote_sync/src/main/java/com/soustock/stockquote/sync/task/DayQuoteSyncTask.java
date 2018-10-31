@@ -64,7 +64,7 @@ public class DayQuoteSyncTask extends BaseSyncTask {
         return 2;
     }
 
-    private void syncEveryStock(String stockCode) throws IOException, ParseException {
+    private void syncEveryStock(String stockCode) throws Exception {
         String maxTradeDateOfTarget = TargetDataCommon.getMaxDateOfStockQuote(stockCode);
 
         List<StockQuotePo> stockQuotePoList = null;
@@ -84,12 +84,12 @@ public class DayQuoteSyncTask extends BaseSyncTask {
             for (StockQuotePo stockQuotePo: stockQuotePoList){
                 stockQuotePoListTemp.add(stockQuotePo);
                 index ++;
-                if (index % 100 == 0){
+                if (index % 30 == 0){
                     TargetDataCommon.insertDayQuotes(stockQuotePoListTemp);
                     stockQuotePoListTemp.clear();
                 }
             }
-            if (index % 100 > 0){
+            if (index % 30 > 0){
                 TargetDataCommon.insertDayQuotes(stockQuotePoListTemp);
                 stockQuotePoListTemp.clear();
             }

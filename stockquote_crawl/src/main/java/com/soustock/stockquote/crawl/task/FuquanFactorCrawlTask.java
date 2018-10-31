@@ -67,7 +67,7 @@ public class FuquanFactorCrawlTask extends BaseCrawlTask {
 
     @Override
     public int getExecuteOrder() {
-        return 1;
+        return 4;
     }
 
 }

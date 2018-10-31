@@ -44,7 +44,7 @@ public class StockBasicSyncTask extends BaseSyncTask {
         return 0;
     }
 
-    private void procSync() throws IOException, BusinessException {
+    private void procSync() throws Exception {
         //获得目标数据库的最大更新日期
         Long maxUpdateTime = TargetDataCommon.getMaxUpdateTimeOfStockUpdate();
         List<StockBasicPo> stockBasicPoList = (maxUpdateTime == null)?

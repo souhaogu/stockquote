@@ -60,7 +60,9 @@ public class ReturnMapHandler {
             Map<String, Object> retMap = (Map<String, Object>) JsonUtity.readValue(retMapStr, Map.class);
             if (retMap != null) {
                 boolean isSucc = (boolean) retMap.get("isSucc");
-                if (!isSucc) {
+                if (isSucc) {
+                    return;
+                } else {
                     String errorMsg = (String) retMap.get("error");
                     if (!StringUtity.isNullOrEmpty(errorMsg)) {
                         throw new BusinessException(errorMsg);

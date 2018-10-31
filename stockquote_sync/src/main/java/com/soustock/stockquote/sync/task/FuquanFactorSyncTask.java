@@ -54,7 +54,7 @@ public class FuquanFactorSyncTask extends BaseSyncTask {
         }
     }
 
-    private void syncEveryStock(String stockCode) throws IOException, ParseException {
+    private void syncEveryStock(String stockCode) throws Exception {
         String maxTradeDateOfTarget = TargetDataCommon.getMaxDateOfFuquanFactor(stockCode);
         List<FuquanFactorPo> fuquanFactorPoList = null;
         if (StringUtity.isNullOrEmpty(maxTradeDateOfTarget)){
@@ -73,12 +73,12 @@ public class FuquanFactorSyncTask extends BaseSyncTask {
             for (FuquanFactorPo fuquanFactorPo: fuquanFactorPoList){
                 fuquanFactorPoListTemp.add(fuquanFactorPo);
                 index ++;
-                if (index % 100 == 0){
+                if (index % 30 == 0){
                     TargetDataCommon.insertFuquanFactors(fuquanFactorPoListTemp);
                     fuquanFactorPoListTemp.clear();
                 }
             }
-            if (index % 100 > 0){
+            if (index % 30 > 0){
                 TargetDataCommon.insertFuquanFactors(fuquanFactorPoListTemp);
                 fuquanFactorPoListTemp.clear();
             }
