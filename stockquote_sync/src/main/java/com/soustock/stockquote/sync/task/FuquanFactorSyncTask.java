@@ -45,9 +45,10 @@ public class FuquanFactorSyncTask extends BaseSyncTask {
             int stockIndex = 0;
             for (StockBasicPo stockBasicPo: stockBasicPoList) {
                 String stockCode = stockBasicPo.getStockCode();
-                syncEveryStock(stockCode);
                 stockIndex ++;
-                logger.info(String.format("Fuquan factor sync: %d/%d, %s...", stockIndex, stockCount, stockCode));
+                logger.info(String.format("Fuquan factor sync: %d/%d, %s...begin", stockIndex, stockCount, stockCode));
+                syncEveryStock(stockCode);
+                logger.info(String.format("Fuquan factor sync: %d/%d, %s...done", stockIndex, stockCount, stockCode));
             }
         } catch (Exception ex) {
             throw new BusinessException(ex);

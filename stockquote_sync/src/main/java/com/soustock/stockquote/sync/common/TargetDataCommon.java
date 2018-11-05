@@ -1,13 +1,11 @@
 package com.soustock.stockquote.sync.common;
 
-import com.alibaba.fastjson.JSON;
-import com.soustock.stockquote.exception.BusinessException;
+
 import com.soustock.stockquote.po.FuquanFactorPo;
 import com.soustock.stockquote.po.StockBasicPo;
 import com.soustock.stockquote.po.StockQuotePo;
 import com.soustock.stockquote.utils.HttpRequester;
 import com.soustock.stockquote.utils.JsonUtity;
-import com.soustock.stockquote.utils.StringUtity;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +17,7 @@ import java.util.Map;
 public class TargetDataCommon {
 
     private final static String BASE_URL_QUOTE = "https://souhaogu.cn/stock_quote";
+    // private final static String BASE_URL_QUOTE = "http://localhost:8080/stock_quote";
 
     /**
      * 得到目标数据源的最大更新日期

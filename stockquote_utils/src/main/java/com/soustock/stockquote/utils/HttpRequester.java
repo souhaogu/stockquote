@@ -1,6 +1,8 @@
 package com.soustock.stockquote.utils;
 
 
+import javafx.util.converter.CharacterStringConverter;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,11 +17,6 @@ import java.util.Map;
  * @author xuyufei
  */
 public class HttpRequester {
-    private String defaultContentEncoding;
-
-    public HttpRequester() {
-        this.defaultContentEncoding = Charset.defaultCharset().name();
-    }
 
     /**
      * 发送GET请求
@@ -170,9 +167,10 @@ public class HttpRequester {
     private String makeContent(String urlString,
                                     HttpURLConnection urlConnection) throws IOException {
         try {
-            String encoding = urlConnection.getContentEncoding();
-            if (encoding == null)
-                encoding = this.defaultContentEncoding;
+            String encoding = "UTF-8";
+//            urlConnection.getContentEncoding();
+//            if (encoding == null)
+//                encoding = this.defaultContentEncoding;
             InputStream in = urlConnection.getInputStream();
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -188,20 +186,6 @@ public class HttpRequester {
             if (urlConnection != null)
                 urlConnection.disconnect();
         }
-    }
-
-    /**
-     * 默认的响应字符集
-     */
-    public String getDefaultContentEncoding() {
-        return this.defaultContentEncoding;
-    }
-
-    /**
-     * 设置默认的响应字符集
-     */
-    public void setDefaultContentEncoding(String defaultContentEncoding) {
-        this.defaultContentEncoding = defaultContentEncoding;
     }
 
     public static void main(String[] args) throws IOException {

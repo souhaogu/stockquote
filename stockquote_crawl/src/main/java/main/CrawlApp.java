@@ -1,8 +1,12 @@
 package main;
 
 import com.soustock.stockquote.crawl.job.CrawlJobDetail;
+import com.soustock.stockquote.exception.BusinessException;
+import com.soustock.stockquote.utils.pinyin4j.IllegalPinyinException;
+import com.soustock.stockquote.utils.pinyin4j.PinyinConverter;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+
 import java.util.TimeZone;
 
 /**
@@ -15,7 +19,14 @@ public class CrawlApp {
      * @param args
      */
     private static Scheduler sched = null;
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws IllegalPinyinException, BusinessException {
+//        //String str = "st长沙市长";
+//        String str = "*st浦发";
+//        System.out.println(str);
+//        PinyinConverter converter = new PinyinConverter();
+//        System.out.println((converter.getPinyin(str)));
+//        System.out.println((converter.getPinyinFirstSpell(str)));
+
         try {
             TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
             sched = startSchedule();

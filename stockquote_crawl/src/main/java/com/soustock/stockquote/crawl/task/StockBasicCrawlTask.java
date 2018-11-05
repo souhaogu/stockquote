@@ -11,9 +11,9 @@ import com.soustock.stockquote.dao.StockBasicDao;
 import com.soustock.stockquote.exception.BusinessException;
 import com.soustock.stockquote.po.Constants;
 import com.soustock.stockquote.po.StockBasicPo;
-import com.soustock.stockquote.utils.ChineseToEnglish;
 import com.soustock.stockquote.utils.DateUtity;
 import com.soustock.stockquote.utils.NullCheckUtity;
+import com.soustock.stockquote.utils.pinyin4j.PinyinConverter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,9 +41,14 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
     @Override
     protected void process() throws BusinessException {
         try {
+            //发现新上市的股票
             for (String marketName : Constants.MARKET_NAME_ARR) {
                 procMarket(marketName);
             }
+
+            StockBasicUpdateProc proc = new StockBasicUpdateProc(stockBasicDao);
+            proc.doProc();
+
             //更新缓存
             stockListDateCache.reset();
         } catch (Exception ex) {
@@ -62,8 +68,8 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
 
     private void procMarket(String marketName) throws IOException, BusinessException {
         //目前只处理两个市场，沪A和深A
-        long countInDb = stockBasicDao.getStockCountOfMarket(marketName);
-        long countFromWeb = getCountFromWeb(marketName);
+        int countInDb = (int) stockBasicDao.getStockCountOfMarket(marketName);
+        int countFromWeb = getCountFromWeb(marketName);
         if (countFromWeb == countInDb) {
             logger.info(String.format("market: %s, can not find a new stock, so exit the task.", marketName));
         } else {
@@ -82,6 +88,7 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
         int pageEnd = (int) Math.ceil((fetchStart + fetchCount) * 1.0 / pageSize);
         int pageCount = pageEnd - pageStart + 1;
         logger.info(String.format("found %d stocks，make %d row as one page，so need download %d pages.", fetchCount, pageSize, pageCount));
+        PinyinConverter pinyinConverter = new PinyinConverter();
         for (int pageNum = pageStart; pageNum <= pageEnd; pageNum++) {
             logger.info(String.format("Now the page %d will be download...", pageNum));
             String requestUrl = "https://xueqiu.com/proipo/query.json";
@@ -115,7 +122,7 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
                     stockBasicPo = new StockBasicPo();
                     stockBasicPo.setStockCode(stockCode);
                     stockBasicPo.setStockName(fieldArr.getString(1));
-                    String pyName = ChineseToEnglish.getPinYinHeadChar(fieldArr.getString(1)).toLowerCase();
+                    String pyName = pinyinConverter.getPinyinFirstSpell(fieldArr.getString(1)).toLowerCase();
                     if (pyName.startsWith("*")) {
                         pyName = pyName.substring(1);
                     }
@@ -142,7 +149,7 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
         }
     }
 
-    private long getCountFromWeb(String marketName) throws IOException {
+    private int getCountFromWeb(String marketName) throws IOException {
         String requestUrl = "https://xueqiu.com/proipo/query.json";
         Map<String, String> paramaters = new HashMap<>();
         paramaters.put("page", "1");
@@ -155,8 +162,10 @@ public class StockBasicCrawlTask extends BaseCrawlTask {
 
         String jsonStr = XueqiuConnector.sendGet(requestUrl, paramaters, null);
         JSONObject jsonObject = JSON.parseObject(jsonStr);
-        return jsonObject.getDouble("count").longValue();
+        //return jsonObject.getDouble("count").longValue();
+        return jsonObject.getInteger("count");
     }
+
 
 
 }

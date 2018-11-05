@@ -41,7 +41,7 @@ public class StockBasicSyncTask extends BaseSyncTask {
 
     @Override
     public int getExecuteOrder() {
-        return 0;
+        return 1;
     }
 
     private void procSync() throws Exception {

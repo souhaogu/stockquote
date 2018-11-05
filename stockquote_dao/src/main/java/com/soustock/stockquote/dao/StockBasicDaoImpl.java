@@ -44,21 +44,6 @@ public class StockBasicDaoImpl implements StockBasicDao {
         return stockBasicMapper.getStockCountOfMarket(market);
     }
 
-//    @Override
-//    public PageList<StockBasicPo> getStockInfosOfMarket(String market, PageCdt pageCdt) {
-//        long total = stockBasicMapper.getStockCountOfMarket(market);
-//        int pageSize = (int)Math.ceil((total * 1.0) / pageCdt.getPageSize());
-//        int startRow = (pageCdt.getPageNum()-1)* pageCdt.getPageSize();
-//        List<StockBasicPo> stockInfoVos = stockBasicMapper.getStockInfosOfMarket(market,
-//                startRow, pageCdt.getPageSize());
-//        PageList<StockBasicPo> result = new PageList<>();
-//        result.setPageCdt(pageCdt);
-//        result.setPages(pageSize);
-//        result.setResult(stockInfoVos);
-//        result.setTotal(total);
-//        return result;
-//    }
-
     @Override
     public List<StockBasicPo> getAllStockBasics() {
         return stockBasicMapper.getAllStockBasics();
