@@ -22,6 +22,8 @@ public class ReturnMapHandler {
                     Object obj = retMap.get(resultKey);
                     if (obj != null) {
                         return (T) JsonUtity.readValue(obj.toString(), resultClazz);
+                    } else {
+                        return null;
                     }
                 } else {
                     String errorMsg = (String) retMap.get("errorMsg");
@@ -82,6 +84,8 @@ public class ReturnMapHandler {
                     Object obj = retMap.get(resultKey);
                     if (obj != null) {
                         return (T)obj;
+                    } else {
+                        return null;
                     }
                 } else {
                     String errorMsg = (String) retMap.get("error");
