@@ -64,7 +64,8 @@ public class StockBasicSyncTask extends BaseSyncTask {
             TargetDataCommon.insertOrUpdateStockBasics(stockBasicPosTemp);
             stockBasicPosTemp.clear();
         }
-    }
 
+        TargetDataCommon.refreshCache();
+    }
 
 }

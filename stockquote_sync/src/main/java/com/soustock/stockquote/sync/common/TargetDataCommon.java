@@ -45,6 +45,18 @@ public class TargetDataCommon {
         ReturnMapHandler.handleVoid(retStr);
     }
 
+    /**
+     * 清空目标接口的缓存数据
+     * @return
+     * @throws IOException
+     */
+    public static void refreshCache() throws Exception {
+        String urlString = BASE_URL_QUOTE + "/stockBasic/refreshCache.do";
+        HttpRequester httpRequester = new HttpRequester();
+        String retStr = httpRequester.sendPost(urlString);
+        ReturnMapHandler.handleVoid(retStr);
+    }
+
 
     /**
      * 得到目标数据源某个股票的最大交易日期
